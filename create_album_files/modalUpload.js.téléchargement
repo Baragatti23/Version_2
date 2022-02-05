@@ -1,0 +1,78 @@
+const btnAccept=document.querySelector(".ModalUpload-btnFinish");
+const btnClose=document.querySelector(".ModalUpload-btnClose");
+const figures=document.querySelector(".ModalUpload--fullPhotos");
+const showAllPhotos=document.querySelector(".ModalUpload--panelAllPhotos");
+const showAppPhotos=document.querySelector(".ModalUpload--panelAppPhotos");
+const viewFullPhotos=document.querySelector(".ModalUpload--fullPhotos");
+const viewEmpty=document.querySelector(".ModalUpload--vide");
+const inputFile=document.querySelector(".ModalUpload main input[type=file]");
+let FilesSelecteds=[];
+const btnUpPhoto=[document.querySelector(".ModalUpload--vide button"),document.querySelector(".ModalUpload--fullPhotos button")];
+btnUpPhoto.map(el=>{
+    el.addEventListener("click",(e)=>{
+        selectFiles();
+    });  
+})
+figures.classList.add("_hide_");
+viewEmpty.classList.remove("_hide_");
+btnAccept.addEventListener("click",(e)=>{
+    document.querySelector(".ModalUpload--cap").classList.add("_hide_");
+});
+btnClose.addEventListener("click",(e)=>{
+    document.querySelector(".ModalUpload--cap").classList.add("_hide_");
+});
+showAppPhotos.addEventListener("click",(e)=>{
+    showAllPhotos.classList.remove("_active_");
+    showAppPhotos.classList.add("_active_");
+    const array=Array.from(document.querySelectorAll(".ModalUpload main >div"));
+    array.map(el=>{
+        el.classList.add("_hide_");
+    })
+    viewFullPhotos.classList.remove("_hide_");
+});
+showAllPhotos.addEventListener("click",(e)=>{
+    showAllPhotos.classList.add("_active_");
+    showAppPhotos.classList.remove("_active_");
+    const array=Array.from(document.querySelectorAll(".ModalUpload main >div"));
+    array.map(el=>{
+        el.classList.add("_hide_");
+    })
+    viewEmpty.classList.remove("_hide_");
+});
+figures.addEventListener("click",(e)=>{
+    e.stopPropagation();
+    let elems=e.path;
+    let elem=addEventsGroup("figure",elems);
+    if(elem!=null){
+        FilesSelecteds=Array.from(document.querySelectorAll(".ModalUpload--fullPhotos figure._selected_ img"));
+        
+        if(elem.querySelector("input[type=checkbox]").checked){
+            elem.querySelector("input[type=checkbox]").checked=false;
+            elem.classList.remove("_selected_");
+        }else{
+            elem.classList.add("_selected_");
+            elem.querySelector("input[type=checkbox]").checked=true;
+        }
+        btnAccept.querySelector("span").textContent=FilesSelecteds.length;
+    }
+},false);
+btnClose.addEventListener("click",()=>{
+
+});
+const addEventsGroup=(selector,elems)=>{
+    let elem=null;
+    for(let i=0;i<elems.length;i++){
+        if(elems[i].tagName!=undefined && (elems[i].tagName.toLowerCase()==selector 
+        || elems[i].querySelector(selector)!=null)){
+            elem=elems[i];
+            break;
+        }
+    }
+    return elem;
+}
+const selectFiles=()=>{
+    inputFile.click();
+}
+// const btnAccept=document.querySelector(".ModalUpload-btnFinish");
+// const btnAccept=document.querySelector(".ModalUpload-btnFinish");
+// const btnAccept=document.querySelector(".ModalUpload-btnFinish");
